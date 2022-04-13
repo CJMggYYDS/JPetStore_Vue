@@ -1,13 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-<<<<<<< Updated upstream
-
-=======
 import cartView from '../views/cart'
 import newOrder from '../views/newOrder.vue'
 import orderView from '../views/order'
 import lineOrder from '../views/lineOrder'
->>>>>>> Stashed changes
 Vue.use(VueRouter)
 
 const routes = [
@@ -23,7 +19,6 @@ const routes = [
   {
     name:'首页',
     path: '/',
-<<<<<<< Updated upstream
     title: 'JPetStore',
     component: ()=> import ('../views/index.vue')
   },
@@ -58,7 +53,8 @@ const routes = [
     path: '/item/detail',
     component: ()=> import ('../views/items/detail.vue')
   },
-=======
+  {
+    path: '/',
     component : cartView
   },
   {
@@ -74,22 +70,20 @@ const routes = [
     component : orderView
   },
   {
-    path: '/lineItem',
+    path: '/lineOrder',
     component : lineOrder
   }
->>>>>>> Stashed changes
 ]
 
 const router = new VueRouter({
   mode: 'history',
+  base: process.env.BASE_URL,
   routes
 })
-
 router.beforeEach((to, from, next) => {
   if(to.meta.title) {
     document.title = to.meta.title;
   }
   next();
 })
-
 export default router
