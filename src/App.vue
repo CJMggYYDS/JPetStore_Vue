@@ -1,12 +1,15 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
+    <router-view></router-view>
   </div>
 </template>
+
+<script>
+//import SignIn from "./views/account/SignInForm.vue"
+export default {
+  
+}
+</script>
 
 <style lang="less">
 #app {
