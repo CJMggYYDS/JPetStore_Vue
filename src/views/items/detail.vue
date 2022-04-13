@@ -1,0 +1,86 @@
+<template>
+    <el-row class="box">
+        <el-col :span="6"><div class="grid-content bg-purple"><div>&nbsp;</div> </div></el-col>
+        <el-col :span="6">
+            <div class="grid-content bg-purple-light">
+                <div class="image">
+                    <img style='width:250px;height:250px;' src="../../assets/logo.png">
+                </div>
+            </div></el-col>
+        <el-col :span="8"> 
+            <div class="grid-content bg-purple " style="margin-top:20px">
+                <el-descriptions title="商品详细信息" :column="1" size="normal" border>
+                <el-descriptions-item label="ProductId" >{{item.productId}}</el-descriptions-item>
+                <el-descriptions-item label="ItemId">{{item.itemId}}</el-descriptions-item>
+                <el-descriptions-item label="PetName">{{item.name}}</el-descriptions-item>
+                <el-descriptions-item label="Price">${{item.price}}</el-descriptions-item>
+                <el-descriptions-item label="Description">{{item.attr}}</el-descriptions-item>
+                <el-descriptions-item label="Number"> 
+                    <el-input-number v-model="num"  size="mini" :min="1" :max="10" label="描述文字"></el-input-number>
+                </el-descriptions-item>
+                </el-descriptions>
+                <el-button class="buttom" type="primary" @click="addToCart()">Add to Cart</el-button>
+            </div></el-col>
+        </el-row>
+</template>
+
+<script>
+    export default {
+        name:'Detail',
+        data() {
+            return {
+                num:1,
+                item:{
+                    productId:"AV-CB-02",
+                    itemId:this.$route.query.itemId,
+                    name:'13',
+                    price:99.00,
+                    attr:"pretty bird"
+                }
+            }
+        },
+        methods: {
+            getData(){
+                this.axios.get('',{
+                    itemId:this.$route.query.itemId
+                }).then(response =>{
+                    var dataItem = response.data.data
+                    item.productId = dataItem.productId
+                    item.itemId = dataItem.itemId
+                    item.name = dataItem.productName
+                    item.attr = dataItem.attribute1
+                }).catch(error =>{
+                    this.$message.error(response.data.msg)
+                })
+            },
+            addToCart(){
+                this.$route.push('/')
+            }
+        },
+        created(){
+            this.getData()
+        }
+    }
+
+</script>
+
+<style scoped>
+.box{
+    height: 500px;
+}
+.image{
+    border:1px solid #f2f2f2;
+    width : 250px;
+    height: 250px;
+    margin-top: 60px;
+    padding: 15px;
+}
+.fontStyle{
+    font-size:20px;
+    font-weight: 600;
+}
+.buttom{
+    margin-top:20px;
+    margin-left:100px;
+}
+</style>

@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-
 Vue.use(VueRouter)
 
 const routes = [
@@ -13,6 +12,17 @@ const routes = [
       title: '用户登录'
     },
     component: () => import('../views/account/SignInForm.vue')
+  },
+  {
+    name:'首页',
+    path: '/',
+    title: 'JPetStore',
+    component: ()=> import ('../views/index.vue')
+  },
+  {
+    name: '商品',
+    path: '/item',
+    component: ()=> import ('../views/items/item.vue')
   },
 
   {
@@ -34,12 +44,16 @@ const routes = [
     },
     component: () => import('../views/account/AccountInfo.vue')
   },
-  
+
+  {
+    name: '详细',
+    path: '/item/detail',
+    component: ()=> import ('../views/items/detail.vue')
+  },
 ]
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
   routes
 })
 
