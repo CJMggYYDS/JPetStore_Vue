@@ -1,6 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+<<<<<<< Updated upstream
 
+=======
+import cartView from '../views/cart'
+import newOrder from '../views/newOrder.vue'
+import orderView from '../views/order'
+import lineOrder from '../views/lineOrder'
+>>>>>>> Stashed changes
 Vue.use(VueRouter)
 
 const routes = [
@@ -16,6 +23,7 @@ const routes = [
   {
     name:'首页',
     path: '/',
+<<<<<<< Updated upstream
     title: 'JPetStore',
     component: ()=> import ('../views/index.vue')
   },
@@ -50,6 +58,26 @@ const routes = [
     path: '/item/detail',
     component: ()=> import ('../views/items/detail.vue')
   },
+=======
+    component : cartView
+  },
+  {
+    path: '/cart',
+    component : cartView
+  },
+  {
+    path: '/newOrder',
+    component : newOrder
+  },
+  {
+    path: '/order',
+    component : orderView
+  },
+  {
+    path: '/lineItem',
+    component : lineOrder
+  }
+>>>>>>> Stashed changes
 ]
 
 const router = new VueRouter({
