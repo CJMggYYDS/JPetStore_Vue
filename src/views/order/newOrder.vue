@@ -111,6 +111,7 @@ export default{
    name : 'newOrder',
    data(){
        return {
+           myOrder : null,
            committed: false,
       ruleForm: {
            cardType: '',
@@ -221,7 +222,6 @@ export default{
        submitForm(formName) {
            this.$router.push('/order')
            //验证表单，发送订单请求，生成新订单
-           console.log(formName)
             this.$refs[formName].validate((valid) => {
              if (valid) {
               let orderInfo = {
@@ -230,7 +230,8 @@ export default{
               creditCard: this.ruleForm.cardNumber,
               }
               this.$store.commit('getOrderInfo',orderInfo)
-              let order = this.ruleForm.shipToDifferentAddr ? {
+              let order = !this.ruleForm.shipToDifferentAddr ? {
+              username : '1',
               cardType: this.ruleForm.cardType,
               expiryDate: this.ruleForm.expiryTime,
               creditCard: this.ruleForm.cardNumber,
@@ -250,55 +251,74 @@ export default{
               shipState: this.ruleForm.shipAddr.shipState,
               shipZip: this.ruleForm.shipAddr.shipZip,
               shipCountry: this.ruleForm.shipAddr.shipCountry,
+              orderdate : new Date().toLocaleDateString(),
           } : {
-              cardType: this.ruleForm.shipAddr.cardType,
-              expiryDate: this.ruleForm.shipAddr.expiryTime,
-              creditCard: this.ruleForm.shipAddr.cardNumber,
-              billToFirstName: this.ruleForm.shipAddr.firstName,
-              billToLastName: this.ruleForm.shipAddr.lastName,
-              billAddress1: this.ruleForm.shipAddr.addr1,
-              billAddress2: this.ruleForm.shipAddr.addr2,
-              billCity: this.ruleForm.shipAddr.city,
-              billState: this.ruleForm.shipAddr.state,
-              billZip: this.ruleForm.shipAddr.zip,
-              billCountry: this.ruleForm.shipAddr.country,
+              username : this.$store.state.account.username,
+              cardType: this.ruleForm.cardType,
+              expiryDate: this.ruleForm.expiryTime,
+              creditCard: this.ruleForm.cardNumber,
+              billToFirstName: this.ruleForm.firstName,
+              billToLastName: this.ruleForm.lastName,
+              billAddress1: this.ruleForm.addr1,
+              billAddress2: this.ruleForm.addr2,
+              billCity: this.ruleForm.city,
+              billState: this.ruleForm.state,
+              billZip: this.ruleForm.zip,
+              billCountry: this.ruleForm.country,
+              orderdate : new Date().toLocaleDateString(),
           }
+          console.log(this.ruleForm.firstName)
           console.log(order)
           this.committed = true
-         
-          this.axios.post('/order/newOrder',order)
+        
+          this.axios.put('/orders/Orderid',
+            this.$store.state.shopping
+          )
           .then(res=>{
               if(res.data.status){
-           this.axios('/order/alipay',order)
-             .then(res=>{
-                if(res.data.status){
-                  this.$message.success("Payment Redirecting"); 
-                  let htmls = res.data.data;
-                  const div = document.createElement('div');
-						div.innerHTML = htmls;
-						document.body.appendChild(div);
-						document.forms[0].acceptCharset = 'utf-8';
-						document.forms[0].submit()
+                  this.axios.put('/orders/toorder',order)
+                  .then(res=>{
+                    if(res.data.status){
+                      this.myOrder = res.data.data
+                        this.$router.push('/order') 
+                    }
+                  })
+              }})
+          //  this.axios.get('/order/alipay',{
+          //       outTradeNo : this.myOrder,
+          //       subject : this.$store.state.account.username,
+          //       totalAmount : this.$store.getters.shoppingTotal,
+          //       body : new Date().toLocaleString()
+             
+          //  })
+          //    .then(res=>{
+          //       if(res.data.status){
+          //         this.$message.success("Payment Redirecting"); 
+          //         let htmls = res.data.data;
+          //         const div = document.createElement('div');
+					// 	div.innerHTML = htmls;
+					// 	document.body.appendChild(div);
+					// 	document.forms[0].acceptCharset = 'utf-8';
+					// 	document.forms[0].submit()
+          //     }
+          //     else{
+          //       this.$message('请先登入')
+          //       //跳转到登录页
+          //       this.$router.push('/signin?redirect=' )
+          //     }
+          // })
+          // .catch(err=>{
+          //      if (err.response.status == 400) {
+          //       this.$message('请先登入')
+          //       //跳转到登录页
+          //       this.$router.push('/signin?redirect=')
+          //     }
+          //     window.console.error(err);
+          // })
               }
-              else{
-                this.$message('请先登入')
-                //跳转到登录页
-                this.$router.push('/signin?redirect=' )
-              }
-          })
-          .catch(err=>{
-               if (err.response.status == 400) {
-                this.$message('请先登入')
-                //跳转到登录页
-                this.$router.push('/signin?redirect=')
-              }
-              window.console.error(err);
-          })
-              }
-          })
+        
          
-         } 
-          })
+         })
        },
        changeRules(){
            let shipToDifferentAddr = this.ruleForm.shipToDifferentAddr
@@ -312,10 +332,10 @@ export default{
     //   this.rules.shipCountry[0].required = shipToDifferentAddr
             this.$store.shipToDifferentAddr = shipToDifferentAddr;
        }
-    },
+    
     
    }
-
+}
 </script>
 <style scoped>
 

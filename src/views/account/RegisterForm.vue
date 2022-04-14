@@ -1,15 +1,16 @@
 <template>
-    <div class="container">
+    <div class="RegisterForm">
+        <div class="register-warpper">
         <el-form
         label-position="left"
          :model="ruleForm"
          :rules="rules"
-         label-width="160px"
+         label-width="180px"
          status-icon
          ref="ruleForm">
             <el-row :gutter="40" type="flex" justify="center">
-                <el-col :span="8">
-                    <h2>JPetStore 用户注册</h2>
+                <el-col :span="8" class="col">
+                    <h2 class="register-title">JPetStore 用户注册</h2>
                     <el-form-item style="margin-top:50px" label="用户名:" prop="username">
                         <el-input type="text" auto-complete="off" v-model="ruleForm.username"></el-input>
                     </el-form-item>
@@ -94,17 +95,18 @@
                     </el-form-item>
 
                     
-                    <el-form-item>
-                        <el-col :span="8">
+                    <div id="btn">              
+                        <el-col :span="12">
                             <el-button type="primary" round @click="RegisteForm('ruleForm')">注册</el-button>
                         </el-col>
                         <el-col :span="8">
                             <el-button type="primary" round @click="ResetForm('ruleForm')">重置</el-button>
                         </el-col>
-                    </el-form-item>
+                    </div> 
                 </el-col>
             </el-row>
         </el-form>
+        </div>
     </div>
 </template>
 
@@ -327,5 +329,30 @@ export default {
 </script>
 
 <style scoped>
+.col {
+    width: 70%;
+}
+.register-title {
+    text-align: center;
+    color: #505458;
+}
+.RegisterForm {
+    height: 1450px;
+    background-image: linear-gradient(to right, #fbc2eb, #a6c1ee);
+}
+.register-warpper {
+    background-color: #fff;
+    width: 600px;
+    height:1300px;
+    border-radius: 15px;
+    position: relative;
+    left: 50%;
+    top: 700px;
+    margin-bottom: 50px;
+    transform: translate(-50%,-50%);
+}
+#btn{
+    margin-left: 30px;
+}
 
 </style>

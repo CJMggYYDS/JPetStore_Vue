@@ -1,32 +1,33 @@
 <template>
-<div class="container">
+<div class="SiginForm">
+    <div class="login-wrapper">
     <el-form
     label-position="left"
      :model="ruleForm"
      status-icon
      :rules="rules"
      ref="ruleForm"
-     label-width="140px">
-        <el-row :gutter="40" type="flex" justify="center">
-            <el-col :span="8">
-                <h2>JPetStore 用 户 登 录</h2>
-                <el-form-item style="margin-top:50px" label="用户名" prop="username">
-                    <el-input type="text" auto-complete="off" v-model="ruleForm.username"></el-input>
+     label-width="100px"
+     class="login_container">
+        <el-row type="flex" justify="center">
+            <el-col :span="8" class="col">
+                <h2 class="login_title">JPetStore 用户登录</h2>
+                <el-form-item label="用户名" prop="username">
+                    <el-input type="text" auto-complete="off" v-model="ruleForm.username" placeholder="用户名"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
-                    <el-input type="password" auto-complete="off" v-model="ruleForm.password"></el-input>
+                    <el-input type="password" auto-complete="off" v-model="ruleForm.password" placeholder="密码"></el-input>
                 </el-form-item>
                 <el-form-item label="手机号码" prop="phone">
-                    <el-input type="text" auto-complete="off" v-model="ruleForm.phone"></el-input>
+                    <el-input type="text" auto-complete="off" v-model="ruleForm.phone" placeholder="手机号"></el-input>
                 </el-form-item>
                 <el-form-item label="验证码" prop="checkcode">
                     <el-col :span="12">
-                        <el-input type="text" v-model="ruleForm.checkcode"></el-input>
+                        <el-input type="text" v-model="ruleForm.checkcode" placeholder="验证码"></el-input>
                     </el-col>
                     <el-col :span="8">
                         <el-button 
                             type="primary" 
-                            round 
                             @click="getCheckCode()" 
                             :class="{'disabled-style':getCodeBtnDisable}" 
                             :disabled="getCodeBtnDisable">
@@ -35,17 +36,17 @@
                     </el-col>
                 </el-form-item>
                 <el-form-item>
-                    <el-col :span="8">
-                        <el-button type="primary" round @click="LoginForm('ruleForm')">登录</el-button>
+                    <el-col :span="12">
+                        <el-button type="primary" round @click="LoginForm('ruleForm')" class="submitBtn">登录</el-button>
                     </el-col>
-                    <el-col :span="8">
-                        <el-button type="primary" round @click="$router.push('/register')">注册</el-button>
+                    <el-col :span="10">
+                        <el-button type="primary" round @click="$router.push('/register')" class="submitBtn">注册</el-button>
                     </el-col>
                 </el-form-item>
             </el-col>
         </el-row>
     </el-form>
-
+    </div>
 </div>
 </template>
 
@@ -225,4 +226,34 @@ export default {
     color: #CCCCCC;
 }
 
+.login_title {
+    text-align: center;
+    color: #505458;
+}
+.col {
+    width: 65%;
+}
+
+.SiginForm {
+    height: 600px;
+    background-image: linear-gradient(to right, #fbc2eb, #a6c1ee);
+}
+.login-wrapper {
+    background-color: #fff;
+    width: 500px;
+    height:400px;
+    border-radius: 15px;
+    /* padding: 10px 0px; */
+    /* padding-left: 0px; */
+    /* padding-right: 0px; */
+    position: relative;
+    left: 50%;
+    top: 310px;
+    margin-bottom: 50px;
+    transform: translate(-50%,-50%);
+}
+
+.submitBtn {
+    margin-right: 20px;
+}
 </style>

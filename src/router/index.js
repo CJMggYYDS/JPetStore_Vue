@@ -1,13 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
 import Store from '../store/index.js'
-
 
 import cartView from '../views/cart'
 import newOrder from '../views/newOrder.vue'
 import orderView from '../views/order'
 import lineOrder from '../views/lineOrder'
+
 
 Vue.use(VueRouter)
 
@@ -17,17 +16,18 @@ const routes = [
     name: '登录',
     hidden: true,
     meta: {
-      title: '用户登录'
+      title: '登录'
     },
     component: () => import('../views/account/SignInForm.vue')
   },
   {
     name:'首页',
+
     path: '/',
-    title: 'JPetStore',
     meta: {
-      title: '首页'
+      title: 'JPetStore 首页'
     },
+
     component: ()=> import ('../views/index.vue')
   },
   {
@@ -52,10 +52,12 @@ const routes = [
   {
     path: '/user',
     name: '用户信息',
+    title: '用户信息',
     hidden: true,
     meta: {
-      title: '用户信息',
-      requireLogin: true
+      requireLogin: true,
+      title: '用户信息'
+
     },
     component: () => import('../views/account/AccountInfo.vue')
   },
@@ -63,8 +65,9 @@ const routes = [
   {
     name: '详情',
     path: '/item/detail',
-    meta: {
-      title: '商品信息'
+
+    meta:{
+      title: '商品详情'
     },
     component: ()=> import ('../views/items/detail.vue')
   },
@@ -98,16 +101,15 @@ const router = new VueRouter({
 
 
 const store = Store;
-
 router.beforeEach((to, from, next) => {
   if(to.meta.title) {
     document.title = to.meta.title;
   }
-  if (to.meta.requireLogin) {
-    if (store.state.token && store.state.isSigned) {
+  if(to.meta.requireLogin) {
+    if(store.state.token && store.state.isSigned) {
       next();
     }
-    else {
+    else{
       next('/signin');
     }
   }
