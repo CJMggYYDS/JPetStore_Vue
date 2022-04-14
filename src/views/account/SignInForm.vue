@@ -130,46 +130,42 @@ export default {
 
     methods: {
         //登录函数
-        LoginForm(formName) {
-            this.$refs[formName].validate(valid => {
-                //如果表单数据格式满足要求
-                if(valid) {
-                    //发送登录请求
-                    this.axios.post("后端ip/accounts/login", {
-                        //放在请求体中的参数
-                        username: this.ruleForm.username,
-                        password: this.ruleForm.password,
-                        checkcode: this.ruleForm.checkcode
-                    }).then(response => {
-                        //后端返回体中状态码为0，请求成功
-                        if(response.data.status===0) {
-                            //拿到后端jwt生成的token
-                            let token = response.data.data.token;
-                            //token存入本地浏览器中
-                            localStorage.setItem("token", token);
+        LoginForm(formName) {   
+            //发送登录请求
+            this.axios.post("/accounts/login", {
+                //放在请求体中的参数
+                username: this.ruleForm.username,
+                password: this.ruleForm.password,
+                checkcode: this.ruleForm.checkcode
+            }).then(response => {
+                //后端返回体中状态码为0，请求成功
+                if(response.data.status===1) {
+                    //拿到后端jwt生成的token
+                    let token = response.data.data.token;
+                    console.log(response.data.data);
+                    console.log(token);
+                    //token存入本地浏览器中
+                    sessionStorage.setItem("token", token);
 
-                            //将token存入vuex store中，向所有组件共享
-                            this.$store.commit("setToken", token);
-                            //将用户username共享
-                            this.$store.commit("setUsername", response.data.data.username);
-                            //将登录状态由默认的false变为true,变为已登录状态
-                            this.$store.commit("changeIsSigned", true);
-                            //输出一下返回体中的描述信息msg
-                            alert(response.data.msg);
-                            //返回首页
-                            this.$router.push('/');
-                        }
-                        else {
-                            this.$message.error(response.data.msg);
-                        }
-                    }).catch(error => {
-                        alert(error);
-                    });
+                    //将token存入vuex store中，向所有组件共享
+                    this.$store.commit("setToken", token);
+                    //将用户username共享
+                    this.$store.commit("setAccount", response.data.data);
+                    //将登录状态由默认的false变为true,变为已登录状态
+                    this.$store.commit("changeIsSigned", true);
+                    //输出一下返回体中的描述信息msg
+                    this.$message.success('登陆成功');
+                    //返回首页
+                    this.$router.push('/');
                 }
-                else{
-                    alert("表单校验失败")
+                else {
+                    this.$message.error(response.data.msg);
                 }
-            })
+            }).catch(error => {
+                alert(error);
+            });
+                
+              
         },
 
        
@@ -185,7 +181,7 @@ export default {
                 return;
             }
             else {
-                this.axios.get("ip/checkcode", {
+                this.axios.get("/checkcode", {
                     params: {
                         telephone: this.ruleForm.phone
                     }

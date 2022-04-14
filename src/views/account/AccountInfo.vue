@@ -247,9 +247,9 @@ export default {
     methods: {
         //获取用户信息
         getUserInfo() {
-            let username = this.$store.state.username;
+            let username = this.$store.state.account.username;
 
-            this.axios.get("ip/accounts", {
+            this.axios.get("/accounts", {
                 params: {
                     username: username
                 }
@@ -270,7 +270,7 @@ export default {
                     this.ruleForm.state = account.state;
                     this.ruleForm.zip = account.zip;
                     this.ruleForm.languagePreference = account.languagePreference;
-                    this.ruleForm.favouriteCategory = account.favouriteCategory;
+                    this.ruleForm.favouriteCategory = account.favouriteCategoryId;
                     this.ruleForm.list = account.listOption;
                     this.ruleForm.banner = account.bannerOption;
                 }
@@ -284,39 +284,36 @@ export default {
         
         //修改用户信息，提交表单
         changeUserInfo(formName) {
-            this.$refs[formName].validate((valid) => {
-                if(valid) {
-                    let account = {
-                        username: this.ruleForm.username,
-                        password: this.ruleForm.password,
-                        email: this.ruleForm.email,
-                        firstName: this.ruleForm.email,
-                        lastName: this.ruleForm.lastName,
-                        addr1: this.ruleForm.addr1,
-                        addr2: this.ruleForm.addr2,
-                        city: this.ruleForm.city,
-                        state: this.ruleForm.state,
-                        zip: this.ruleForm.zip,
-                        country: this.ruleForm.country,
-                        phone: this.ruleForm.phone,
-                        favouriteCategory: this.ruleForm.favouriteCategory,
-                        languagePreference: this.ruleForm.languagePreference,
-                        listOption: this.ruleForm.list,
-                        bannerOption: this.ruleForm.banner
-                    };
-                    this.axios.put('ip/accounts', account)
-                    .then(response => {
-                        if(response.data.status===0) {
-                            this.$message.success("信息更新成功");
-                        }
-                        else {
-                            this.$message.error("修改信息失败");
-                        }
-                    }).catch(error => {
-                        this.$message.error(error);
-                    })
+            let account = {
+                username: this.ruleForm.username,
+                password: this.ruleForm.password,
+                email: this.ruleForm.email,
+                firstName: this.ruleForm.email,
+                lastName: this.ruleForm.lastName,
+                addr1: this.ruleForm.addr1,
+                addr2: this.ruleForm.addr2,
+                city: this.ruleForm.city,
+                state: this.ruleForm.state,
+                zip: this.ruleForm.zip,
+                country: this.ruleForm.country,
+                phone: this.ruleForm.phone,
+                favouriteCategoryId: this.ruleForm.favouriteCategory,
+                languagePreference: this.ruleForm.languagePreference,
+                listOption: this.ruleForm.list,
+                bannerOption: this.ruleForm.banner
+            };
+            this.axios.put('/accounts/change', account)
+            .then(response => {
+                if(response.data.status===0) {
+                    this.$message.success("信息更新成功");
                 }
+                else {
+                    this.$message.error("修改信息失败");
+                }
+            }).catch(error => {
+                this.$message.error(error);
             })
+            
 
         },
     },

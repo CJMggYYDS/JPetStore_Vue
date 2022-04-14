@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
-    <div class="block">
+  <div class="container backimage">
+    <div class="focus-banner-con-wrq">
       <div>&nbsp;</div>
       <el-carousel height="500px">
-        <el-carousel-item v-for="(category,index) in categories" :key="index">
+        <el-carousel-item :label='category.categoryId'  v-for="(category,index) in categories" :key="index">
           <h3 class="small"><img :src="getImgUrl(category.imgURL)" @click="turnToItem(category.categoryId)"></h3>
         </el-carousel-item>
       </el-carousel>
@@ -16,51 +16,50 @@ export default {
   data() {
     return {
       categories:[
-        {
-          categoryId:'Birds',
-          imgURL: 'assets/Bird.png',
-        },
-        {
-          categoryId:'Cats',
-          imgURL: 'assets/Cat.png'
-        },
-        {
-          categoryId:'Dogs',
-          imgURL: 'assets/Dog.png',
-        },
-        {
-          categoryId:'Fish',
-          imgURL: 'assets/Fish.png' ,
-        },
-        {
-          categoryId:'Reptiles',
-          imgURL: 'assets/Reptile.png' ,
-        }
+        // {
+        //   categoryId:'Birds',
+        //   imgURL: 'assets/Bird.png',
+        // },
+        // {
+        //   categoryId:'Cats',
+        //   imgURL: 'assets/Cat.png'
+        // },
+        // {
+        //   categoryId:'Dogs',
+        //   imgURL: 'assets/Dog.png',
+        // },
+        // {
+        //   categoryId:'Fish',
+        //   imgURL: 'assets/Fish.png' ,
+        // },
+        // {
+        //   categoryId:'Reptiles',
+        //   imgURL: 'assets/Reptile.png' ,
+        // }
       ]
     }
   },
   methods: {
     getData(){
       //发送数据获取categories
-       this.axios.get('').then(response =>{
-          if(response.data.status ===0){
+       this.axios.get('/catalog/categories').then(response =>{
+          if(response.data.status ===1){
               response.data.data.forEach((category) => {
                   var temp = {
                     categoryId : category.categoryId,
-                    imgURL : category.imgURL
+                    imgURL : category.description 
                   }
                   this.categories.push(temp)
               });
           }
       }).catch(error =>{
-          this.$message.error(response.data.msg)
+          this.$message.error(error)
       })
     },
     turnToItem(categoryId){
       this.$router.push('/item?category='+categoryId)
     },
     getImgUrl(url){
-      console.log(url)
       return require("@/"+url)
     }
   },
@@ -72,7 +71,21 @@ export default {
 
 <style scoped>
 .container{
-  height: 600px;
+  height: 620px;
+}
+ .backimage {
+    background-image: url('../assets/background.png');
+    background-size : 100%
+}
+.focus-banner-con-wrq {
+    padding: 12px;
+    padding-bottom: 0;
+    background: #fff;
+    background: rgba(255,255,255,.86);
+    width: 800px;
+    position: relative;
+    margin: 0 auto;
+    box-shadow: 0 1px 3px rgb(167 167 167 / 40%);
 }
 .el-carousel__item h3 {
   text-align: center;

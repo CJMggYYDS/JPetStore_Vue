@@ -117,13 +117,13 @@ export default {
             }
             else {
                 //这里添加向后端发送请求验证用户名是否可用
-                this.axios.get("后端ip/accounts/check",{
+                this.axios.get("/accounts/check",{
                     params: {
                         username: this.ruleForm.username
                     }
                 }).then(response => {
                     //如果用户名已存在，不可用
-                    if(response.data.status===1) {
+                    if(response.data.status===0) {
                         //显示返回体中的msg信息
                         callback(new Error(response.data.msg))
                     }
@@ -132,7 +132,6 @@ export default {
                         callback();
                     }
                 })
-                callback();
             }
         };
 
@@ -285,43 +284,38 @@ export default {
     
     methods: {
         //注册
-        RegisteForm(formName) {
-            this.$refs[formName].validate(valid =>{
-                if(valid) {
-                    //注册请求
-                    let account = {
-                        username: this.ruleForm.username,
-                        password: this.ruleForm.password,
-                        email: this.ruleForm.email,
-                        firstName: this.ruleForm.firstName,
-                        lastName: this.ruleForm.lastName,
-                        addr1: this.ruleForm.addr1,
-                        addr2: this.ruleForm.addr2,
-                        city: this.ruleForm.city,
-                        state: this.ruleForm.state,
-                        zip: this.ruleForm.zip,
-                        country: this.ruleForm.country,
-                        phone: this.ruleForm.phone,
-                        favouriteCategory: this.ruleForm.favouriteCategory,
-                        languagePreference: this.ruleForm.languagePreference,
-                        listOption: this.ruleForm.list,
-                        bannerOption: this.ruleForm.banner
-                    };
-                    this.axios.post("后端ip/accounts",account).then(response => {
-                        //后端返回体状态码为0，注册成功
-                        if(response.data.status===0){
-                            this.$message.success("注册成功");
-                            this.$router.push("/");
-                        }
-                        else{
-                            this.$message.error("注册失败");
-                        }
-                    })
+        RegisteForm(formName) {  
+            //注册请求
+            let account = {
+                username: this.ruleForm.username,
+                password: this.ruleForm.password,
+                email: this.ruleForm.email,
+                firstName: this.ruleForm.firstName,
+                lastName: this.ruleForm.lastName,
+                addr1: this.ruleForm.addr1,
+                addr2: this.ruleForm.addr2,
+                city: this.ruleForm.city,
+                state: this.ruleForm.state,
+                zip: this.ruleForm.zip,
+                country: this.ruleForm.country,
+                phone: this.ruleForm.phone,
+                favouriteCategoryId: this.ruleForm.favouriteCategory,
+                languagePreference: this.ruleForm.languagePreference,
+                listOption: this.ruleForm.list,
+                bannerOption: this.ruleForm.banner
+            };
+            this.axios.post("/accounts/register",account).then(response => {
+                //后端返回体状态码为0，注册成功
+                if(response.data.status===1){
+                    this.$message.success("注册成功");
+                    this.$router.push("/");
                 }
                 else{
-                    alert("error submit");
+                    this.$message.error("注册失败");S
                 }
             })
+                
+          
         },
         //重置表单
         ResetForm(formName) {

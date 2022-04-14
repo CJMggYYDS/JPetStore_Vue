@@ -30,30 +30,42 @@
             return {
                 //需要的数据
                 items:[
-                    {
-                        name:'Labrador Retriever',
-                        id:'EST-22',
-                        imgURL:"assets/logo.png",
-                        price:135.50
-                    },
-                    {
-                        name:'Labrador Retriever',
-                        id:'EST-23',
-                        imgURL:'assets/logo.png',
-                        price:145.50
-                    },
-                    {
-                        name:'Labrador Retriever',
-                        id:'EST-24',
-                        imgURL:'assets/logo.png',
-                        price:255.50
-                    },
-                    {
-                        name:'Labrador Retriever',
-                        id:'EST-25',
-                        imgURL:'assets/logo.png',
-                        price:325.00
-                    }
+                    // {
+                    //     name:'Labrador Retriever',
+                    //     id:'EST-22',
+                    //     imgURL:"assets/logo.png",
+                    //     price:135.50
+                    // },
+                    // {
+                    //     name:'Labrador Retriever',
+                    //     id:'EST-23',
+                    //     imgURL:'assets/logo.png',
+                    //     price:145.50
+                    // },
+                    // {
+                    //     name:'Labrador Retriever',
+                    //     id:'EST-24',
+                    //     imgURL:'assets/logo.png',
+                    //     price:255.50
+                    // },
+                    // {
+                    //     name:'Labrador Retriever',
+                    //     id:'EST-25',
+                    //     imgURL:'assets/logo.png',
+                    //     price:325.00
+                    // },
+                    // {
+                    //     name:'Labrador Retriever',
+                    //     id:'EST-25',
+                    //     imgURL:'assets/logo.png',
+                    //     price:325.00
+                    // },
+                    // {
+                    //     name:'Labrador Retriever',
+                    //     id:'EST-25',
+                    //     imgURL:'assets/logo.png',
+                    //     price:325.00
+                    // }
                 ]
             }
         },
@@ -62,58 +74,64 @@
         methods: {
             getData(){
                 if(this.$route.query.productId){
-                    this.axios.get('',{
-                        productId: this.$route.query.productId
-                    }).then(response =>{
-                        if(response.data.status ===0){
+                    this.axios.get('/catalog/products/'+this.$route.query.productId+'/items'
+                    ).then(response =>{
+                        if(response.data.status ===1){
+                            this.items.splice(0, this.items.length)
+                            console.log("@",this.$route.query.productId)
                             response.data.data.forEach((item) => {
                                 var temp = {
                                     name: item.productName,
-                                    id: item.productId,
-                                    imgURL: item.productDescription,
+                                    id: item.itemId,
+                                    imgURL: 'assets/logo.png',
                                     price :item.listPrice
                                 }
                                 this.items.push(temp)
                             });
                         }
                     }).catch(error =>{
-                        this.$message.error(response.data.msg)
+                        this.$message.error(error)
                     })
                 }else if(this.$route.query.category){
-                    this.axios.get('',{
-                        category: this.$route.query.category
-                    }).then(response =>{
-                        if(response.data.status ===0){
+                    this.axios.get('/catalog/'+this.$route.query.category+'/items'
+                    ).then(response =>{
+                        if(response.data.status ===1){
+                            this.items.splice(0, this.items.length)
+                            console.log("#",this.$route.query.category)
                             response.data.data.forEach((item) => {
                                 var temp = {
                                     name: item.productName,
                                     id: item.productId,
-                                    imgURL: item.productDescription,
+                                    imgURL: 'assets/Cat.png',
                                     price :item.listPrice
                                 }
                                 this.items.push(temp)
                             });
                         }
                     }).catch(error =>{
-                        this.$message.error(response.data.msg)
+                        this.$message.error(error)
                     })
                 }else if(this.$route.query.keyWord){
-                     this.axios.get('',{
-                        keyWord: this.$route.query.keyWord
+                     this.axios.get('/items/search',{
+                       params:{
+                            keyWord: this.$route.query.keyWord
+                       }
                     }).then(response =>{
-                        if(response.data.status ===0){
+                        if(response.data.status ===1){
+                            this.items.splice(0, this.items.length)
+                            console.log("%",this.$route.query.keyWord)
                             response.data.data.forEach((item) => {
                                 var temp = {
-                                    name: item.productName,
-                                    id: item.productId,
-                                    imgURL: item.productDescription,
-                                    price :item.listPrice
+                                    name: item.name,
+                                    id: item.id,
+                                    imgURL: 'assets/Dog.png',
+                                    price :item.price
                                 }
                                 this.items.push(temp)
                             });
                         }
                     }).catch(error =>{
-                        this.$message.error(response.data.msg)
+                        this.$message.error(error)
                     })
                 }
             },
@@ -138,9 +156,10 @@
 
 <style scoped>
 .box{
-    width:1150px;
+    width:1100px;
     height:1000px;
-    margin-left :100px
+    margin-left :130px;
+    margin-top :10px
 }
 ul {
     display: block;
@@ -149,13 +168,13 @@ ul {
     margin-block-end: 10em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
-    padding-inline-start: 20px;
+    padding-inline-start: 0px;
 }
 
 .pc-search-items-list {
-    width: 1100px;
+    width: 1000px;
     font-size: 0px;
-    border-top: 0px solid #f2f2f2;
+    border-top: 1px solid #f2f2f2;
     border-left: 1px solid #f2f2f2;
     
 }
