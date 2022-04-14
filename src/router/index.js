@@ -2,10 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Store from '../store/index.js'
 
-import cartView from '../views/cart'
-import newOrder from '../views/newOrder.vue'
-import orderView from '../views/order'
-import lineOrder from '../views/lineOrder'
+import cartView from '../views/cart/cart'
+import newOrder from '../views/order/newOrder.vue'
+import orderView from '../views/order/order'
+import lineOrder from '../views/order/lineOrder'
 
 
 Vue.use(VueRouter)
@@ -70,10 +70,6 @@ const routes = [
       title: '商品详情'
     },
     component: ()=> import ('../views/items/detail.vue')
-  },
-  {
-    path: '/',
-    component : cartView
   },
   {
     path: '/cart',
