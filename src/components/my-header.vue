@@ -23,10 +23,10 @@
       @keyup.enter.native="search"></el-autocomplete>
   </el-col>
   <el-col :span="2"><el-button style="margin-top :7px" type="primary" icon="el-icon-search" @click="search">搜索</el-button></el-col>
-  <el-menu-item index="7">个人中心</el-menu-item>
+  <el-menu-item index="/user">个人中心</el-menu-item>
   <el-menu-item index="8">购物车</el-menu-item>
   <el-menu-item index="9">订单管理</el-menu-item>
-  <el-menu-item index="10">登入/登出</el-menu-item>
+  <el-menu-item index="/signin">登入/登出</el-menu-item>
 </el-menu>
 
 </template>

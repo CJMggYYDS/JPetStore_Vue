@@ -13,6 +13,17 @@ Vue.use(VueAxios, axios)
 Vue.use(VueCookies)
 Vue.use(ElementUI)
 
+axios.defaults.baseURL = 'http://localhost:8080';
+axios.interceptors.request.use((config) => {
+  const token = sessionStorage.getItem('token');
+  if(token) {
+    config.headers.accessToken = token;
+    return config;
+  }
+}, (error) => {
+  return Promise.reject(error);
+});
+
 new Vue({
   router,
   store,

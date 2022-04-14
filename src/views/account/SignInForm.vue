@@ -146,12 +146,12 @@ export default {
                             //拿到后端jwt生成的token
                             let token = response.data.data.token;
                             //token存入本地浏览器中
-                            localStorage.setItem("token", token);
-
+                            sessionStorage.setItem("token", token);
+                            let account = response.data.data;
                             //将token存入vuex store中，向所有组件共享
                             this.$store.commit("setToken", token);
                             //将用户username共享
-                            this.$store.commit("setUsername", response.data.data.username);
+                            this.$store.commit("setAccount", account);
                             //将登录状态由默认的false变为true,变为已登录状态
                             this.$store.commit("changeIsSigned", true);
                             //输出一下返回体中的描述信息msg

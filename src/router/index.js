@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Store from '../store/index.js'
 
 Vue.use(VueRouter)
 
@@ -9,19 +10,24 @@ const routes = [
     name: '登录',
     hidden: true,
     meta: {
-      title: '用户登录'
+      title: '登录'
     },
     component: () => import('../views/account/SignInForm.vue')
   },
   {
     name:'首页',
     path: '/',
-    title: 'JPetStore',
+    meta: {
+      title: 'JPetStore 首页'
+    },
     component: ()=> import ('../views/index.vue')
   },
   {
     name: '商品',
     path: '/item',
+    meta: {
+      title: '商品列表'
+    },
     component: ()=> import ('../views/items/item.vue')
   },
 
@@ -38,8 +44,10 @@ const routes = [
   {
     path: '/user',
     name: '用户信息',
+    title: '用户信息',
     hidden: true,
     meta: {
+      requireLogin: true,
       title: '用户信息'
     },
     component: () => import('../views/account/AccountInfo.vue')
@@ -48,6 +56,9 @@ const routes = [
   {
     name: '详细',
     path: '/item/detail',
+    meta:{
+      title: '商品详情'
+    },
     component: ()=> import ('../views/items/detail.vue')
   },
 ]
@@ -57,9 +68,18 @@ const router = new VueRouter({
   routes
 })
 
+const store = Store;
 router.beforeEach((to, from, next) => {
   if(to.meta.title) {
     document.title = to.meta.title;
+  }
+  if(to.meta.requireLogin) {
+    if(store.state.token && store.state.isSigned) {
+      next();
+    }
+    else{
+      next('/signin');
+    }
   }
   next();
 })
