@@ -2,6 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Store from '../store/index.js'
 
+import cartView from '../views/cart'
+import newOrder from '../views/newOrder.vue'
+import orderView from '../views/order'
+import lineOrder from '../views/lineOrder'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -49,24 +54,48 @@ const routes = [
     meta: {
       requireLogin: true,
       title: '用户信息'
+
     },
     component: () => import('../views/account/AccountInfo.vue')
   },
 
   {
-    name: '详细',
+    name: '详情',
     path: '/item/detail',
+
     meta:{
       title: '商品详情'
     },
     component: ()=> import ('../views/items/detail.vue')
   },
+  {
+    path: '/',
+    component : cartView
+  },
+  {
+    path: '/cart',
+    component : cartView
+  },
+  {
+    path: '/newOrder',
+    component : newOrder
+  },
+  {
+    path: '/order',
+    component : orderView
+  },
+  {
+    path: '/lineOrder',
+    component : lineOrder
+  }
 ]
 
 const router = new VueRouter({
   mode: 'history',
+  base: process.env.BASE_URL,
   routes
 })
+
 
 const store = Store;
 router.beforeEach((to, from, next) => {
@@ -83,5 +112,4 @@ router.beforeEach((to, from, next) => {
   }
   next();
 })
-
 export default router

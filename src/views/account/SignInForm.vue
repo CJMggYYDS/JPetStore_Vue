@@ -1,32 +1,33 @@
 <template>
-<div class="container">
+<div class="SiginForm">
+    <div class="login-wrapper">
     <el-form
     label-position="left"
      :model="ruleForm"
      status-icon
      :rules="rules"
      ref="ruleForm"
-     label-width="140px">
-        <el-row :gutter="40" type="flex" justify="center">
-            <el-col :span="8">
-                <h2>JPetStore 用 户 登 录</h2>
-                <el-form-item style="margin-top:50px" label="用户名" prop="username">
-                    <el-input type="text" auto-complete="off" v-model="ruleForm.username"></el-input>
+     label-width="100px"
+     class="login_container">
+        <el-row type="flex" justify="center">
+            <el-col :span="8" class="col">
+                <h2 class="login_title">JPetStore 用户登录</h2>
+                <el-form-item label="用户名" prop="username">
+                    <el-input type="text" auto-complete="off" v-model="ruleForm.username" placeholder="用户名"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
-                    <el-input type="password" auto-complete="off" v-model="ruleForm.password"></el-input>
+                    <el-input type="password" auto-complete="off" v-model="ruleForm.password" placeholder="密码"></el-input>
                 </el-form-item>
                 <el-form-item label="手机号码" prop="phone">
-                    <el-input type="text" auto-complete="off" v-model="ruleForm.phone"></el-input>
+                    <el-input type="text" auto-complete="off" v-model="ruleForm.phone" placeholder="手机号"></el-input>
                 </el-form-item>
                 <el-form-item label="验证码" prop="checkcode">
                     <el-col :span="12">
-                        <el-input type="text" v-model="ruleForm.checkcode"></el-input>
+                        <el-input type="text" v-model="ruleForm.checkcode" placeholder="验证码"></el-input>
                     </el-col>
                     <el-col :span="8">
                         <el-button 
                             type="primary" 
-                            round 
                             @click="getCheckCode()" 
                             :class="{'disabled-style':getCodeBtnDisable}" 
                             :disabled="getCodeBtnDisable">
@@ -35,17 +36,17 @@
                     </el-col>
                 </el-form-item>
                 <el-form-item>
-                    <el-col :span="8">
-                        <el-button type="primary" round @click="LoginForm('ruleForm')">登录</el-button>
+                    <el-col :span="12">
+                        <el-button type="primary" round @click="LoginForm('ruleForm')" class="submitBtn">登录</el-button>
                     </el-col>
-                    <el-col :span="8">
-                        <el-button type="primary" round @click="$router.push('/register')">注册</el-button>
+                    <el-col :span="10">
+                        <el-button type="primary" round @click="$router.push('/register')" class="submitBtn">注册</el-button>
                     </el-col>
                 </el-form-item>
             </el-col>
         </el-row>
     </el-form>
-
+    </div>
 </div>
 </template>
 
@@ -130,46 +131,42 @@ export default {
 
     methods: {
         //登录函数
-        LoginForm(formName) {
-            this.$refs[formName].validate(valid => {
-                //如果表单数据格式满足要求
-                if(valid) {
-                    //发送登录请求
-                    this.axios.post("后端ip/accounts/login", {
-                        //放在请求体中的参数
-                        username: this.ruleForm.username,
-                        password: this.ruleForm.password,
-                        checkcode: this.ruleForm.checkcode
-                    }).then(response => {
-                        //后端返回体中状态码为0，请求成功
-                        if(response.data.status===0) {
-                            //拿到后端jwt生成的token
-                            let token = response.data.data.token;
-                            //token存入本地浏览器中
-                            sessionStorage.setItem("token", token);
-                            let account = response.data.data;
-                            //将token存入vuex store中，向所有组件共享
-                            this.$store.commit("setToken", token);
-                            //将用户username共享
-                            this.$store.commit("setAccount", account);
-                            //将登录状态由默认的false变为true,变为已登录状态
-                            this.$store.commit("changeIsSigned", true);
-                            //输出一下返回体中的描述信息msg
-                            alert(response.data.msg);
-                            //返回首页
-                            this.$router.push('/');
-                        }
-                        else {
-                            this.$message.error(response.data.msg);
-                        }
-                    }).catch(error => {
-                        alert(error);
-                    });
+        LoginForm(formName) {   
+            //发送登录请求
+            this.axios.post("/accounts/login", {
+                //放在请求体中的参数
+                username: this.ruleForm.username,
+                password: this.ruleForm.password,
+                checkcode: this.ruleForm.checkcode
+            }).then(response => {
+                //后端返回体中状态码为0，请求成功
+                if(response.data.status===1) {
+                    //拿到后端jwt生成的token
+                    let token = response.data.data.token;
+                    console.log(response.data.data);
+                    console.log(token);
+                    //token存入本地浏览器中
+                    sessionStorage.setItem("token", token);
+
+                    //将token存入vuex store中，向所有组件共享
+                    this.$store.commit("setToken", token);
+                    //将用户username共享
+                    this.$store.commit("setAccount", response.data.data);
+                    //将登录状态由默认的false变为true,变为已登录状态
+                    this.$store.commit("changeIsSigned", true);
+                    //输出一下返回体中的描述信息msg
+                    this.$message.success('登陆成功');
+                    //返回首页
+                    this.$router.push('/');
                 }
-                else{
-                    alert("表单校验失败")
+                else {
+                    this.$message.error(response.data.msg);
                 }
-            })
+            }).catch(error => {
+                alert(error);
+            });
+                
+              
         },
 
        
@@ -185,7 +182,7 @@ export default {
                 return;
             }
             else {
-                this.axios.get("ip/checkcode", {
+                this.axios.get("/checkcode", {
                     params: {
                         telephone: this.ruleForm.phone
                     }
@@ -229,4 +226,34 @@ export default {
     color: #CCCCCC;
 }
 
+.login_title {
+    text-align: center;
+    color: #505458;
+}
+.col {
+    width: 65%;
+}
+
+.SiginForm {
+    height: 600px;
+    background-image: linear-gradient(to right, #fbc2eb, #a6c1ee);
+}
+.login-wrapper {
+    background-color: #fff;
+    width: 500px;
+    height:400px;
+    border-radius: 15px;
+    /* padding: 10px 0px; */
+    /* padding-left: 0px; */
+    /* padding-right: 0px; */
+    position: relative;
+    left: 50%;
+    top: 310px;
+    margin-bottom: 50px;
+    transform: translate(-50%,-50%);
+}
+
+.submitBtn {
+    margin-right: 20px;
+}
 </style>
