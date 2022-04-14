@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state: {
 
     token: null,   //后端给的token令牌
-    
+    account:null,  //用户
     isSigned: false,  //是否登录
 
     shipAddr:{
@@ -34,20 +34,24 @@ export default new Vuex.Store({
       }
       return total;
     }
+
+    
   },
+  
   mutations: {
 
     setToken: (state, token) => {
       state.token = token
     },
 
-    setUsername: (state, username) => {
-      state.username = username
+    setAccount: (state, account) => {
+      state.account = account
     },
 
     changeIsSigned: (state, status) => {
       state.isSigned = status
     },
+
     getAllCartItems:(state , allCartItems)=>{
      state.allCartItems = allCartItems
     },
@@ -58,6 +62,7 @@ export default new Vuex.Store({
       state.orderInfo = orderInfo
 
     }
+
   },
   actions: {
   },

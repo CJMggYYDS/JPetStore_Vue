@@ -1,10 +1,10 @@
 <template>
     <el-row class="box">
-        <el-col :span="6"><div class="grid-content bg-purple"><div>&nbsp;</div> </div></el-col>
-        <el-col :span="6">
+        <el-col :span="3"><div class="grid-content bg-purple"><div>&nbsp;</div> </div></el-col>
+        <el-col :span="9">
             <div class="grid-content bg-purple-light">
-                <div class="image">
-                    <img style='width:250px;height:250px;' src="../../assets/logo.png">
+                <div class="focus-banner-con-wrq">
+                    <el-image style='width:400px;height:290px;' fit='cover' :src="getImgUrl(item.imgURL)"></el-image>
                 </div>
             </div></el-col>
         <el-col :span="8"> 
@@ -31,30 +31,38 @@
             return {
                 num:1,
                 item:{
-                    productId:"AV-CB-02",
-                    itemId:this.$route.query.itemId,
-                    name:'13',
-                    price:99.00,
-                    attr:"pretty bird"
+                    // productId:"AV-CB-02",
+                    // itemId:this.$route.query.itemId,
+                    // name:'13',
+                    // price:99.00,
+                    // attr:"pretty bird",
+                    // imgURL: 'assets/Bird.png'
                 }
             }
         },
         methods: {
             getData(){
-                this.axios.get('',{
-                    itemId:this.$route.query.itemId
-                }).then(response =>{
+                this.axios.get('/catalog/items/'+this.$route.query.itemId).then(response =>{
                     var dataItem = response.data.data
-                    item.productId = dataItem.productId
-                    item.itemId = dataItem.itemId
-                    item.name = dataItem.productName
-                    item.attr = dataItem.attribute1
+                    var temp ={
+                        productId : dataItem.productId,
+                        itemId : dataItem.itemId,
+                        name : dataItem.productName,
+                        attr : dataItem.attribute1,
+                        price :dataItem.listPrice,
+                        imgURL : 'assets/Bird.png',
+                    }
+                    console.log("&",temp)
+                    this.item = temp
                 }).catch(error =>{
-                    this.$message.error(response.data.msg)
+                    this.$message.error(error)
                 })
             },
             addToCart(){
                 this.$route.push('/')
+            },
+            getImgUrl(url){
+                return require("@/"+url)
             }
         },
         created(){
@@ -74,6 +82,18 @@
     height: 250px;
     margin-top: 60px;
     padding: 15px;
+}
+
+.focus-banner-con-wrq {
+    margin-top: 40px;
+    padding: 12px;
+    padding-bottom: 0;
+    background: #fff;
+    background: rgba(255,255,255,.86);
+    width: 400px;
+    height: 300px;
+    position: relative;
+    box-shadow: 0 1px 3px rgb(167 167 167 / 40%);
 }
 .fontStyle{
     font-size:20px;
