@@ -1,6 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
 import Store from '../store/index.js'
+
+
+import cartView from '../views/cart'
+import newOrder from '../views/newOrder.vue'
+import orderView from '../views/order'
+import lineOrder from '../views/lineOrder'
 
 Vue.use(VueRouter)
 
@@ -61,14 +68,37 @@ const routes = [
     },
     component: ()=> import ('../views/items/detail.vue')
   },
+  {
+    path: '/',
+    component : cartView
+  },
+  {
+    path: '/cart',
+    component : cartView
+  },
+  {
+    path: '/newOrder',
+    component : newOrder
+  },
+  {
+    path: '/order',
+    component : orderView
+  },
+  {
+    path: '/lineOrder',
+    component : lineOrder
+  }
 ]
 
 const router = new VueRouter({
   mode: 'history',
+  base: process.env.BASE_URL,
   routes
 })
 
+
 const store = Store;
+
 router.beforeEach((to, from, next) => {
   if(to.meta.title) {
     document.title = to.meta.title;
@@ -83,5 +113,4 @@ router.beforeEach((to, from, next) => {
   }
   next();
 })
-
 export default router
