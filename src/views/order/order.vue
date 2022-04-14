@@ -90,28 +90,28 @@
           <el-table-column align="center" label="Item ID" width="180">
             <template v-slot="scope">
               <span style="margin-left: 10px">
-                <el-link type="primary" @click="$router.push('/item?id='+scope.row.item.itemId)">{{ scope.row.item.itemId }}</el-link>
+                <el-link type="primary" @click="$router.push('/item?id='+scope.row.itemId)">{{ scope.row.itemId }}</el-link>
               </span>
             </template>
           </el-table-column>
           <el-table-column align="center" label="Description" width="180">
             <template v-slot="scope">
-              <span v-html="scope.row.item.product.description" style="margin-left: 10px"></span>
+              <span v-html="scope.row.addr1+' '+scope.row.name" style="margin-left: 10px"></span>
             </template>
           </el-table-column>
           <el-table-column align="center" label="Quantity" width="180">
             <template v-slot="scope">
-              <span style="margin-left: 10px">{{ scope.row.item.quantity }}</span>
+              <span style="margin-left: 10px">{{ scope.row.quantity }}</span>
             </template>
           </el-table-column>
           <el-table-column align="center" label="Price" width="180">
             <template v-slot="scope">
-              <span style="margin-left: 10px">${{ scope.row.item.listPrice }}</span>
+              <span style="margin-left: 10px">${{ scope.row.listPrice }}</span>
             </template>
           </el-table-column>
           <el-table-column align="center" label="Total Cost" width="180">
             <template v-slot="scope">
-              <span style="margin-left: 10px">${{ scope.row.item.quantity * scope.row.item.listPrice }}</span>
+              <span style="margin-left: 10px">${{ scope.row.quantity * scope.row.listPrice }}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -129,7 +129,7 @@ export default {
   data() {
     return {
       shipToDifferentAddr :this.$store.shipToDifferentAddr,
-      order : this.$store.state.shipping,
+      order : this.$store.state.shopping,
       orderInfo : this.$store.state.orderInfo,
       ruleForm: {
         firstName: this.$store.state.account.firstName,
@@ -149,7 +149,7 @@ export default {
       total(){
           let total = 0;
             this.order.forEach(item => {
-                total += item.item.quantity * item.item.listPrice;
+                total += item.quantity * item.listPrice;
             });
             return total;
       }

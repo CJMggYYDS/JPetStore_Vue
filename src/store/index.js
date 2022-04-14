@@ -7,19 +7,9 @@ export default new Vuex.Store({
   state: {
 
     token: null,   //后端给的token令牌
-    username: null, //当前登录用户的用户名
+    
     isSigned: false,  //是否登录
 
-    account : {
-        firstName: '1',
-        lastName: '1',
-        addr1: '1',
-        addr2: '1',
-        city: '1',
-        state: '1',
-        zip: '1',
-        country: '1',    
-    },
     shipAddr:{
       shipFirstName: '1',
       shipLastName: '1',
@@ -33,11 +23,11 @@ export default new Vuex.Store({
     shipToDifferentAddr: false,
     orderInfo : null,
     allCartItems: [],
-    shipping: [],
+    shopping: [],
 
   },
   getters: {
-    shippingTotal: state=>{
+    shoppingTotal: state=>{
       let total = 0;
       for(let item of state.shipping){
         total += item.total;
@@ -61,8 +51,8 @@ export default new Vuex.Store({
     getAllCartItems:(state , allCartItems)=>{
      state.allCartItems = allCartItems
     },
-    getShopping:(state, shipping)=>{
-      state.shipping = shipping
+    getShopping:(state, shopping)=>{
+      state.shopping = shopping
     },
     getOrderInfo: (state , orderInfo)=>{
       state.orderInfo = orderInfo

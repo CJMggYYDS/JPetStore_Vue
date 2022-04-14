@@ -17,7 +17,7 @@
       </el-table-column>
       <el-table-column align="center" label="Total Price" width="180">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">${{ scope.row.totalPrice }}</span>
+          <span style="margin-left: 10px">${{ scope.row.listPrice * scope.row.quantity}}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -28,33 +28,13 @@
 export default {
   data() {
     return {
-      orderList: [
-        {
-          orderId: '1',
-          orderDate: '2019-01-01',
-          totalPrice: 100,
-        },
-        {
-          orderId: '2',
-          orderDate: '2019-01-02',
-          totalPrice: 200,
-        },
-        {
-          orderId: '3',
-          orderDate: '2019-01-03',
-          totalPrice: 300,
-        },
-      ],
+      orderList: null,
     }
   },
 
   methods: {
     getData() {
-      this.axios.get('/user/orders',{
-          params: {
-            username : this.$store.state.account.username,
-          }
-      })
+      this.axios.get('/orders/user/'+this.$$store.account.username)
         .then(res => {
           if (res.data.status) {
             this.orderList = res.data.data.orderList

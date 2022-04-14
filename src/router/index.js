@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import cartView from '../views/cart'
-import newOrder from '../views/newOrder.vue'
-import orderView from '../views/order'
-import lineOrder from '../views/lineOrder'
+import cartView from '../views/cart/cart'
+import newOrder from '../views/order/newOrder.vue'
+import orderView from '../views/order/order'
+import lineOrder from '../views/order/lineOrder'
 Vue.use(VueRouter)
 
 const routes = [
@@ -18,7 +18,7 @@ const routes = [
   },
   {
     name:'首页',
-    path: '/',
+    path: '/home',
     title: 'JPetStore',
     component: ()=> import ('../views/index.vue')
   },

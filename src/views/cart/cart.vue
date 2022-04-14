@@ -7,40 +7,40 @@
       <el-table-column align="center" label="Item ID" width="100">
         <template slot-scope="scope">
           <span style="margin-left: 10px">
-            <el-link type="primary" @click="$router.push('/item?id='+scope.row.item.itemId)">{{ scope.row.item.itemId }}</el-link>
+            <el-link type="primary" @click="$router.push('/item?id='+scope.row.itemId)">{{ scope.row.itemId }}</el-link>
           </span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="Product ID" width="100">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.item.productId }}</span>
+          <span style="margin-left: 10px">{{ scope.row.productId }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="Description" width="150">
         <template slot-scope="scope">
-          <span v-html="scope.row.item.product.description" style="margin-left: 10px"></span>
+          <span v-html="scope.row.attribute1+' '+scope.row.name" style="margin-left: 10px"></span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="In Stock?" width="100">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.item.product.inStock }}</span>
+          <span style="margin-left: 10px">{{ scope.row.status }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="Quantity" width="150">
         <template slot-scope="scope">
           <!-- <span style="margin-left: 10px">{{ scope.row.item.quantity }}</span> -->
           <!-- <el-input-number size="mini" v-model="scope.row.item.quantity" @change="handleChange(scope.row, scope.row.item.quantity)" :min="0"></el-input-number> -->
-          <el-input-number  size="mini" v-model="scope.row.item.quantity" @change="handleChange(scope.row)" @blur="handleChange(row)" :min="1"></el-input-number>
+          <el-input-number  size="mini" v-model="scope.row.quantity" @change="handleChange(scope.row)" @blur="handleChange(row)" :min="1"></el-input-number>
         </template>
       </el-table-column>
       <el-table-column align="center" label="List Price" width="100">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.item.listPrice }}</span>
+          <span style="margin-left: 10px">{{ scope.row.listPrice }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="Total Cost" width="100">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.item.listPrice * scope.row.item.quantity }}</span>
+          <span style="margin-left: 10px">{{ scope.row.listPrice * scope.row.quantity }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="Action" width="100">
@@ -64,48 +64,7 @@ export default {
     return {
       shopping : [],
       //局部的一个备份
-      allCartItems: [{
-        item: {
-          itemId: '1',
-          productId: '1',
-          quantity: 1,
-          listPrice: 10,
-          total: 0,
-          product: {
-            description: '1',
-            inStock: 0,
-          }
-        },
-        total: 0,
-      },
-      {
-        item: {
-          itemId: '2',
-          productId: '2',
-          quantity: 1,
-          listPrice: 20,
-          total: 0,
-          product: {
-            description: '2',
-            inStock: 0,
-                   }
-        },
-        total: 0,
-      },
-      {
-        item: {
-          itemId: '3',
-          productId: '3',
-          quantity: 1,
-          listPrice: 30,
-          total: 0,
-          product: {
-            description: '3',
-            inStock: 0,
-                   }
-        },
-        total: 0,
-      }],
+      allCartItems: [],
       // subTotal: 0
     }
   },
@@ -114,7 +73,7 @@ export default {
     subtotal() {
        let total = 0;
       for(let item of this.allCartItems) {
-      total += item.item.quantity * item.item.listPrice;
+      total += item.quantity * item.listPrice;
       }
       return total;
     },
@@ -127,7 +86,7 @@ export default {
       let sums = [];
       let total = 0;
       for(let item of this.allCartItems) {
-      total += item.item.quantity * item.item.listPrice;
+      total += item.quantity * item.listPrice;
       }
       sums[1] = 'Total : ';
       sums[7] = total;
@@ -135,9 +94,9 @@ export default {
     },
     getData() {
       // 得到数据
-      this.$axios.get('/carts/cartshopitem',{
+      this.axios.get('/carts/usercart',{
         params:{
-          username : this.$store.state.account.username
+          username : "1"
         }
       })
       .then(res=>{
@@ -161,13 +120,17 @@ export default {
     },
    handleChange(row) {
         
-         this.$axios.put('/carts/cartup',{
-           itemId: row.item.itemId,
-           quantity: row.item.quantity,
-           username : this.$store.state.account.username
+         this.axios.patch('/carts/update',{
+          
+             itemId: row.itemId,
+           quantity: row.quantity,
+           username : '1',
+           productId: row.productId
+           
+           
          })
          .then(res=>{
-           if(res.data.status){
+           if(res.data.status ==1 ){
              this.$store.commit('updateAllCartItems',this.allCartItems);
             //  this.$store.getters.allCartItems = res.data.data.cart.allCartItems;
             //  this.$$store.commit('updateCart',res.data.data.cart);
@@ -184,32 +147,37 @@ export default {
      },
     submitOrder() {this.$router.push('/newOrder')
       //提交订单,并跳往newOrder页面
-      this.$store.commit('getShopping',this.shopping);
-      this.axios.post('/cart/cartItems',this.shopping)
-      .then(res=>{
-        if(res.data.status)
-        this.$router.push('/newOrder')
-        else{
-          this.$message('购买失败！');
-        }
-      })
-      .catch(error=>{
-        console.log(error)
-        this.$message('购买失败！')
-      })
+      this.$store.commit('getShopping',this.$store.state.shopping);
+      console.log(this.$store.shopping)
+      // this.axios.post('/cart/cartItems',this.shopping)
+      // .then(res=>{
+      //   if(res.data.status)
+      //   this.$router.push('/newOrder')
+      //   else{
+      //     this.$message('购买失败！');
+      //   }
+      // })
+      // .catch(error=>{
+      //   console.log(error)
+      //   this.$message('购买失败！')
+      // })
       
     },
     handleDelete(row) {
       let item1 ;
       for(let item of this.allCartItems){
-        if(item.item.itemId === row.item.itemId){
+        if(item.itemId === row.itemId){
           item1 = item;
           break;
         }
       }
-      this.$axios.put('/carts/cartre',{
-        itemId: row.item.itemId,
-        username : this.$store.state.account.username
+      this.axios.delete('/carts/delete',{
+        params : {
+        itemId: row.itemId,
+        quantity : row.quantity,
+        username : '1',
+        productId: row.productId
+        }
       })
       .then(res=>{
         if(res.data.status){
@@ -226,7 +194,8 @@ export default {
       for(let item of selection) {
         this.shopping.push(item);
       }
-       this.$store.state.shopping = this.shopping;
+      this.$store.commit('getShopping',this.shopping);
+      console.log(this.$store.state.shopping)
       //选择改变
     },
    
