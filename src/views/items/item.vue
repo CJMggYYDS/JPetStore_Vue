@@ -1,8 +1,9 @@
 <template>
+<div class="color">
     <div class="box">
         <ul class="pc-search-items-list">
-            <li v-for="(item,i) in items " :key="i" @click='turnToDetail(item.id)' class="pc-items-item">
-                <img class="pc-items-item-img img-loaded" :src="getImgUrl(item.imgURL)">
+            <li id='item' v-for="(item,i) in items " :key="i" @click='turnToDetail(item.id)' class="pc-items-item">
+                <img class="pc-items-item-img img-loaded" fit='cover' :src="getImgUrl(item.imgURL)">
                 <div class="pc-items-item-title pc-items-item-title-row2">
                     <span>{{item.name}}</span>
                 </div>
@@ -21,6 +22,7 @@
         </el-pagination> -->
 
     </div>
+</div>
 </template>
 
 <script>
@@ -29,44 +31,7 @@
         data() {
             return {
                 //需要的数据
-                items:[
-                    // {
-                    //     name:'Labrador Retriever',
-                    //     id:'EST-22',
-                    //     imgURL:"assets/logo.png",
-                    //     price:135.50
-                    // },
-                    // {
-                    //     name:'Labrador Retriever',
-                    //     id:'EST-23',
-                    //     imgURL:'assets/logo.png',
-                    //     price:145.50
-                    // },
-                    // {
-                    //     name:'Labrador Retriever',
-                    //     id:'EST-24',
-                    //     imgURL:'assets/logo.png',
-                    //     price:255.50
-                    // },
-                    // {
-                    //     name:'Labrador Retriever',
-                    //     id:'EST-25',
-                    //     imgURL:'assets/logo.png',
-                    //     price:325.00
-                    // },
-                    // {
-                    //     name:'Labrador Retriever',
-                    //     id:'EST-25',
-                    //     imgURL:'assets/logo.png',
-                    //     price:325.00
-                    // },
-                    // {
-                    //     name:'Labrador Retriever',
-                    //     id:'EST-25',
-                    //     imgURL:'assets/logo.png',
-                    //     price:325.00
-                    // }
-                ]
+                items:[]
             }
         },
         components:{
@@ -78,12 +43,11 @@
                     ).then(response =>{
                         if(response.data.status ===1){
                             this.items.splice(0, this.items.length)
-                            console.log("@",this.$route.query.productId)
                             response.data.data.forEach((item) => {
                                 var temp = {
-                                    name: item.productName,
+                                    name: item.attribute1,
                                     id: item.itemId,
-                                    imgURL: 'assets/logo.png',
+                                    imgURL: item.attribute2,
                                     price :item.listPrice
                                 }
                                 this.items.push(temp)
@@ -97,12 +61,11 @@
                     ).then(response =>{
                         if(response.data.status ===1){
                             this.items.splice(0, this.items.length)
-                            console.log("#",this.$route.query.category)
                             response.data.data.forEach((item) => {
                                 var temp = {
-                                    name: item.productName,
-                                    id: item.productId,
-                                    imgURL: 'assets/Cat.png',
+                                    name: item.attribute1,
+                                    id: item.itemId,
+                                    imgURL: item.attribute2,
                                     price :item.listPrice
                                 }
                                 this.items.push(temp)
@@ -119,12 +82,11 @@
                     }).then(response =>{
                         if(response.data.status ===1){
                             this.items.splice(0, this.items.length)
-                            console.log("%",this.$route.query.keyWord)
                             response.data.data.forEach((item) => {
                                 var temp = {
                                     name: item.name,
                                     id: item.id,
-                                    imgURL: 'assets/Dog.png',
+                                    imgURL: item.imgURL,
                                     price :item.price
                                 }
                                 this.items.push(temp)
@@ -155,11 +117,14 @@
 </script>
 
 <style scoped>
+.color{
+    background-color: #d3cfd9;
+}
 .box{
     width:1100px;
-    height:1000px;
+    height:700px;
     margin-left :130px;
-    margin-top :10px
+    margin-top :1px
 }
 ul {
     display: block;
@@ -174,7 +139,7 @@ ul {
 .pc-search-items-list {
     width: 1000px;
     font-size: 0px;
-    border-top: 1px solid #f2f2f2;
+    /* border-top: 1px solid #f2f2f2; */
     border-left: 1px solid #f2f2f2;
     
 }
@@ -186,9 +151,9 @@ ul {
     box-sizing: border-box;
     display: inline-block;
     font-size: 12px;
-    border: 1px solid #f2f2f2;
-    border-top: none;
-    border-left: none;
+    border: 3px solid #f2f2f2;
+    /* border-top: none;
+    border-left: none; */
     background: #fff;
     vertical-align: top;
     padding: 10px 20px 0;
@@ -204,6 +169,11 @@ img {
     max-width: 100%;
     vertical-align: top;
     -ms-interpolation-mode: bicubic;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+
+    object-position: center;
 }
 .pc-search-items-list .pc-items-item-title.pc-items-item-title-row2 {
     height: 40px;
@@ -246,5 +216,8 @@ img {
     font-family: PingFangSC-Medium;
     font-size: 18px;
     color: #fd3f31;
+}
+#item:hover{
+    border-color: orange;
 }
 </style>

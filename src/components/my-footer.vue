@@ -1,6 +1,6 @@
 <template>
   <div class="Footer"> 
-    <div class="footer footer-inner">
+    <!-- <div class="footer footer-inner">
       <ul class="footer-vip">
         <li>
           <i class="footer-vip-v2-ico01">正品货源</i>
@@ -25,11 +25,12 @@
         </li>
        
       </ul>
-    </div>
+    </div> -->
       <h1 class="logo">JPetStore <small>2022</small></h1>
             <p>🏫 Central South University</p>
             <p></p>
-            <p>👨‍💻 陈建民 夏雨 滕世源 赖泽宇 刘健</p>
+            <p>👨‍💻 前端：陈建民 夏雨 赖泽宇</p>
+            <p>👨‍💻 后端：滕世源 刘健</p>
   </div>
 </template>
 

@@ -50,7 +50,7 @@
                         name : dataItem.productName,
                         attr : dataItem.attribute1,
                         price :dataItem.listPrice,
-                        imgURL : 'assets/Bird.png',
+                        imgURL : dataItem.attribute2,
                     }
                     console.log("&",temp)
                     this.item = temp
@@ -59,7 +59,19 @@
                 })
             },
             addToCart(){
-                this.$route.push('/')
+                // this.axios.post('/cart/insert',{
+                //     username = this.$store.state.account.username,
+                //     itemId : dataItem.itemId,
+                //     quantity : dataItem.quantity,
+                //     productId : dataItem.productId
+                // })
+                // .then(res=>{
+                //     if(res.data.status)
+                //     {
+                //          this.$router.push('/cart')
+                //     }
+                // })
+
             },
             getImgUrl(url){
                 return require("@/"+url)
@@ -75,6 +87,7 @@
 <style scoped>
 .box{
     height: 500px;
+    background-color: #d3cfd9;
 }
 .image{
     border:1px solid #f2f2f2;
@@ -103,4 +116,6 @@
     margin-top:20px;
     margin-left:100px;
 }
+
+
 </style>

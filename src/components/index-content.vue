@@ -107,5 +107,8 @@ export default {
 img {
   width: 100%;
   height: 80%;
+  object-fit: cover;
+
+  object-position: center;
 }
 </style>
