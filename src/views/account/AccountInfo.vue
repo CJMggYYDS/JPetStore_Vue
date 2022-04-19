@@ -1,5 +1,6 @@
 <template>
-    <div class="container">
+    <div class="accountForm">
+        <div class="account-wrapper">
         <el-form
          label-position="left"
          :model="ruleForm"
@@ -8,9 +9,9 @@
          status-icon
          ref="ruleForm">
             <el-row :gutter="40" type="flex" justify="center">
-                <el-col :span="8">
-                    <h2>JPetStore 用户中心</h2>
-                    <el-divider>Your Account Information</el-divider>
+                <el-col :span="8" class="col">
+                    <h2 class="account-title">JPetStore 用户中心</h2>
+                    <el-divider>Account Information</el-divider>
                     <el-form-item style="margin-top:50px" label="用户名:" prop="username">
                         <el-input type="text" auto-complete="off" v-model="ruleForm.username" :disabled="true"></el-input>
                     </el-form-item>
@@ -98,7 +99,7 @@
                 </el-col>
             </el-row>
         </el-form>
-        
+        </div>
     </div>
 </template>
 
@@ -249,16 +250,14 @@ export default {
         getUserInfo() {
             let username = this.$store.state.account.username;
 
-            this.axios.get("/accounts", {
-                params: {
-                    username: username
-                }
-            }).then(response => {
-                if(response.data.status===0) {
-                    let account = response.data.data.account;
+            this.axios.get("/accounts/"+username
+            ).then(response => {
+                if(response.data.status===1) {
+                    let account = response.data.data;
                     
                     this.ruleForm.username = account.username;
-                    // this.ruleForm.password = account.password;
+                    this.ruleForm.password = account.password;
+                    this.ruleForm.checkPass = account.password;
                     this.ruleForm.firstName = account.firstName;
                     this.ruleForm.lastName = account.lastName;
                     this.ruleForm.email = account.email;
@@ -302,9 +301,9 @@ export default {
                 listOption: this.ruleForm.list,
                 bannerOption: this.ruleForm.banner
             };
-            this.axios.put('/accounts/change', account)
+            this.axios.put('/accounts', account)
             .then(response => {
-                if(response.data.status===0) {
+                if(response.data.status===1) {
                     this.$message.success("信息更新成功");
                 }
                 else {
@@ -325,5 +324,30 @@ export default {
 </script>
 
 <style>
+.account-title {
+    text-align: center;
+    color: #505458;
+}
+
+.col {
+    width: 70%;
+}
+
+.accountForm {
+    height: 1450px;
+    background-image: linear-gradient(to right, #fbc2eb, #a6c1ee);
+}
+
+.account-wrapper {
+    background-color: #fff;
+    width: 600px;
+    height:1300px;
+    border-radius: 15px;
+    position: relative;
+    left: 50%;
+    top: 700px;
+    margin-bottom: 50px;
+    transform: translate(-50%,-50%);
+}
 
 </style>

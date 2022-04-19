@@ -59,18 +59,18 @@
                 })
             },
             addToCart(){
-                // this.axios.post('/cart/insert',{
-                //     username = this.$store.state.account.username,
-                //     itemId : dataItem.itemId,
-                //     quantity : dataItem.quantity,
-                //     productId : dataItem.productId
-                // })
-                // .then(res=>{
-                //     if(res.data.status)
-                //     {
-                //          this.$router.push('/cart')
-                //     }
-                // })
+                this.axios.put('/carts/insert',{
+                    username : this.$store.state.account.username,
+                    itemId : this.item.itemId,
+                    quantity : this.num,
+                    productId : this.item.productId
+                })
+                .then(res=>{
+                    if(res.data.status)
+                    {
+                         this.$router.push('/cart')
+                    }
+                })
 
             },
             getImgUrl(url){

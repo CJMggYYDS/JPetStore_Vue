@@ -33,7 +33,7 @@
   <el-col :span="2"><el-button style="margin-top :7px" type="primary" @click="search">搜索</el-button></el-col>
   <el-menu-item index="/user">个人中心</el-menu-item>
   <el-menu-item index="/cart">购物车</el-menu-item>
-  <el-menu-item index="/orders">订单管理</el-menu-item>
+  <el-menu-item index="/lineOrder">订单管理</el-menu-item>
   <el-menu-item v-if='this.$store.state.isSigned' @click="signOut" >登出</el-menu-item>
   <el-menu-item v-else index='/signin'>登入</el-menu-item>
 </el-menu>

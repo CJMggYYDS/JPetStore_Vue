@@ -96,7 +96,7 @@ export default {
       // 得到数据
       this.axios.get('/carts/usercart',{
         params:{
-          username : "1"
+          username : this.$store.state.account.username
         }
       })
       .then(res=>{
@@ -120,11 +120,11 @@ export default {
     },
    handleChange(row) {
         
-         this.axios.patch('/carts/update',{
+         this.axios.put('/carts/update',{
           
              itemId: row.itemId,
            quantity: row.quantity,
-           username : '1',
+           username : this.$store.state.account.username,
            productId: row.productId
            
            
@@ -148,7 +148,7 @@ export default {
     submitOrder() {this.$router.push('/newOrder')
       //提交订单,并跳往newOrder页面
       this.$store.commit('getShopping',this.$store.state.shopping);
-      console.log(this.$store.shopping)
+      console.log(this.$store.state.shopping)
       // this.axios.post('/cart/cartItems',this.shopping)
       // .then(res=>{
       //   if(res.data.status)
@@ -175,7 +175,7 @@ export default {
         params : {
         itemId: row.itemId,
         quantity : row.quantity,
-        username : '1',
+        username : this.$store.state.account.username,
         productId: row.productId
         }
       })
@@ -204,6 +204,11 @@ export default {
   created() {
     this.getData();
   },
+  watch: {
+            '$route'() {
+                this.getData();
+            }
+        } 
 }
 </script>
 

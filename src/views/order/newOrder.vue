@@ -220,18 +220,17 @@ export default{
    },
     methods:{
        submitForm(formName) {
-           this.$router.push('/order')
+         console.log("11111111")
            //验证表单，发送订单请求，生成新订单
-            this.$refs[formName].validate((valid) => {
-             if (valid) {
               let orderInfo = {
                    cardType: this.ruleForm.cardType,
               expiryDate: this.ruleForm.expiryTime,
               creditCard: this.ruleForm.cardNumber,
               }
               this.$store.commit('getOrderInfo',orderInfo)
+              this.$store.commit('getAddr',this.ruleForm.shipAddr)
               let order = !this.ruleForm.shipToDifferentAddr ? {
-              username : '1',
+              username : this.$store.state.account.username,
               cardType: this.ruleForm.cardType,
               expiryDate: this.ruleForm.expiryTime,
               creditCard: this.ruleForm.cardNumber,
@@ -251,7 +250,7 @@ export default{
               shipState: this.ruleForm.shipAddr.shipState,
               shipZip: this.ruleForm.shipAddr.shipZip,
               shipCountry: this.ruleForm.shipAddr.shipCountry,
-              orderdate : new Date().toLocaleDateString(),
+              orderdate : new Date().getDate(),
           } : {
               username : this.$store.state.account.username,
               cardType: this.ruleForm.cardType,
@@ -265,7 +264,7 @@ export default{
               billState: this.ruleForm.state,
               billZip: this.ruleForm.zip,
               billCountry: this.ruleForm.country,
-              orderdate : new Date().toLocaleDateString(),
+              orderdate : new Date().getDate(),
           }
           console.log(this.ruleForm.firstName)
           console.log(order)
@@ -315,10 +314,10 @@ export default{
           //     }
           //     window.console.error(err);
           // })
-              }
+              
         
          
-         })
+         
        },
        changeRules(){
            let shipToDifferentAddr = this.ruleForm.shipToDifferentAddr

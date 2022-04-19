@@ -6,7 +6,7 @@ import cartView from '../views/cart/cart'
 import newOrder from '../views/order/newOrder.vue'
 import orderView from '../views/order/order'
 import lineOrder from '../views/order/lineOrder'
-
+import orderDetail from '../views/order/orderDetail'
 
 Vue.use(VueRouter)
 
@@ -73,19 +73,48 @@ const routes = [
   },
   {
     path: '/cart',
+    meta: {
+      requireLogin: true,
+      title: '购物车'
+
+    },
     component : cartView
   },
   {
     path: '/newOrder',
+    meta: {
+      requireLogin: true,
+      title: '提交订单'
+
+    },
     component : newOrder
   },
   {
     path: '/order',
+    meta: {
+      requireLogin: true,
+      title: '订单'
+
+    },
     component : orderView
   },
   {
     path: '/lineOrder',
+    meta: {
+      requireLogin: true,
+      title: '我的订单'
+
+    },
     component : lineOrder
+  },
+  {
+    path: '/orderDetail',
+    meta: {
+      requireLogin: true,
+      title: '我的订单'
+
+    },
+    component : orderDetail
   }
 ]
 

@@ -11,14 +11,14 @@ export default new Vuex.Store({
     isSigned: false,  //是否登录
 
     shipAddr:{
-      shipFirstName: '1',
-      shipLastName: '1',
-      shipAddr1: '1',
-      shipAddr2: '1',
-      shipCity: '1',
-      shipState: '1',
-      shipZip: '1',
-      shipCountry: '1',
+      shipFirstName: '',
+      shipLastName: '',
+      shipAddr1: '',
+      shipAddr2: '',
+      shipCity: '',
+      shipState: '',
+      shipZip: '',
+      shipCountry: '',
     },
     shipToDifferentAddr: false,
     orderInfo : null,
@@ -51,7 +51,9 @@ export default new Vuex.Store({
     changeIsSigned: (state, status) => {
       state.isSigned = status
     },
-
+    getAddr: (state, shipAddr) => {
+      state.shipAddr= shipAddr
+    },
     getAllCartItems:(state , allCartItems)=>{
      state.allCartItems = allCartItems
     },

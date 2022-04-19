@@ -119,11 +119,7 @@ export default {
             }
             else {
                 //这里添加向后端发送请求验证用户名是否可用
-                this.axios.get("/accounts/check",{
-                    params: {
-                        username: this.ruleForm.username
-                    }
-                }).then(response => {
+                this.axios.get("/accounts/inspection/"+this.ruleForm.username).then(response => {
                     //如果用户名已存在，不可用
                     if(response.data.status===0) {
                         //显示返回体中的msg信息

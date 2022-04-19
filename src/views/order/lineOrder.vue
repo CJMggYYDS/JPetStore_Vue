@@ -6,18 +6,18 @@
       <el-table-column align="center" label="Order ID" width="180">
         <template slot-scope="scope">
           <span style="margin-left: 10px">
-            <el-link type="primary" @click="$router.push('/user/order?id='+scope.row.orderId)">{{ scope.row.orderId }}</el-link>
+            <el-link type="primary" @click="$router.push('/orderDetail?id='+scope.row.orderId)">{{ scope.row.orderId }}</el-link>
           </span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="Date" width="180">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.orderDate.substr(0,10) }}</span>
+          <span style="margin-left: 10px">{{ scope.row.orderDate }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="Total Price" width="180">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">${{ scope.row.listPrice * scope.row.quantity}}</span>
+          <span style="margin-left: 10px">${{ scope.row.unitPrice * scope.row.quantity}}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -34,10 +34,11 @@ export default {
 
   methods: {
     getData() {
-      this.axios.get('/orders/user/'+this.$$store.account.username)
+      this.axios.get('/orders/user/'+this.$store.state.account.username)
         .then(res => {
           if (res.data.status) {
-            this.orderList = res.data.data.orderList
+            this.orderList = res.data.data
+            console.log(this.orderList)
           } else {
             this.$message('请先登入')
             //跳转到登录页
